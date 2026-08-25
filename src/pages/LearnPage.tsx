@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 export default function LearnPage() {
   return (
     <main className="page-container">
@@ -29,9 +30,12 @@ export default function LearnPage() {
             databases, security e arquitetura.
           </p>
 
-          <button>
-            Começar
-          </button>
+          <Link
+          to="/learn/aws"
+          className="learning-button"
+          >
+         Começar
+         </Link>
         </article>
 
         <article className="learning-card">
