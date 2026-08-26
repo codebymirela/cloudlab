@@ -7,6 +7,15 @@ import {
   awsLearningPath,
 } from "../data/awsLearningPath";
 
+import {
+  useProgress,
+} from "../hooks/useProgress";
+
+import {
+  flattenLearningPath,
+  isLessonUnlocked,
+} from "../utils/learningNavigation";
+
 export default function LessonPage() {
   const {
     pathId,
@@ -14,7 +23,14 @@ export default function LessonPage() {
     lessonId,
   } = useParams();
 
-  if (pathId !== "aws") {
+  const {
+    getLessonProgress,
+  } = useProgress();
+
+  if (
+    pathId !==
+    awsLearningPath.id
+  ) {
     return (
       <main className="page-container">
         <h1>
@@ -57,9 +73,77 @@ export default function LessonPage() {
     );
   }
 
+  /*
+   * Verifica se a aula pode
+   * realmente ser acessada.
+   */
+  const flatLessons =
+    flattenLearningPath(
+      awsLearningPath,
+    );
+
+  const lessonIndex =
+    flatLessons.findIndex(
+      (item) =>
+        item.moduleId ===
+          learningModule.id &&
+        item.lesson.id ===
+          lesson.id,
+    );
+
+  const unlocked =
+    isLessonUnlocked(
+      flatLessons,
+      lessonIndex,
+      getLessonProgress,
+    );
+
+  /*
+   * Proteção contra acesso direto
+   * pela URL.
+   */
+  if (!unlocked) {
+    return (
+      <main className="locked-lesson-page">
+
+        <section className="locked-lesson-card">
+
+          <div className="locked-icon">
+            🔒
+          </div>
+
+          <span className="eyebrow">
+            LESSON LOCKED
+          </span>
+
+          <h1>
+            Esta aula ainda está bloqueada
+          </h1>
+
+          <p>
+            Conclua a aula anterior para
+            continuar avançando nesta
+            trilha.
+          </p>
+
+          <Link
+            to={`/learn/${awsLearningPath.id}`}
+            className="primary-button"
+          >
+            Voltar para trilha
+          </Link>
+
+        </section>
+
+      </main>
+    );
+  }
+
   return (
     <main className="lesson-page">
+
       <aside className="lesson-sidebar">
+
         <Link
           to={`/learn/${pathId}`}
           className="back-link"
@@ -68,48 +152,74 @@ export default function LessonPage() {
         </Link>
 
         <span className="eyebrow">
-          {learningModule.title}
+          {
+            learningModule.title
+          }
         </span>
 
         <h2>
-          {lesson.title}
+          {
+            lesson.title
+          }
         </h2>
 
         <div className="lesson-meta">
+
           <span>
-            {lesson.estimatedMinutes} min
+            {
+              lesson.estimatedMinutes
+            }{" "}
+            min
           </span>
 
           <span>
-            {lesson.xp} XP
+            {
+              lesson.xp
+            }{" "}
+            XP
           </span>
+
         </div>
+
       </aside>
 
+
       <article className="lesson-content">
+
         <header className="lesson-header">
+
           <span className="eyebrow">
             LESSON
           </span>
 
           <h1>
-            {lesson.title}
+            {
+              lesson.title
+            }
           </h1>
 
           <p>
-            {lesson.description}
+            {
+              lesson.description
+            }
           </p>
+
         </header>
 
-        {lesson.content.length >
-        0 ? (
+
+        {lesson.content.length > 0 ? (
           <div className="lesson-sections">
+
             {lesson.content.map(
               (section) => (
+
                 <section
-                  key={section.id}
+                  key={
+                    section.id
+                  }
                   className="lesson-section"
                 >
+
                   {section.title && (
                     <h2>
                       {
@@ -123,12 +233,16 @@ export default function LessonPage() {
                       section.content
                     }
                   </p>
+
                 </section>
+
               ),
             )}
+
           </div>
         ) : (
           <div className="lesson-empty">
+
             <span className="eyebrow">
               CONTENT IN PROGRESS
             </span>
@@ -139,17 +253,19 @@ export default function LessonPage() {
             </h2>
 
             <p>
-              O conteúdo desta aula
-              será adicionado nas
-              próximas etapas do
-              projeto.
+              O conteúdo desta aula será
+              adicionado nas próximas
+              etapas do projeto.
             </p>
+
           </div>
         )}
+
 
         {lesson.content.length >
           0 && (
           <footer className="lesson-footer">
+
             <div>
               <span className="eyebrow">
                 LESSON COMPLETE
@@ -160,9 +276,8 @@ export default function LessonPage() {
               </h2>
 
               <p>
-                Teste o que você
-                aprendeu e acumule até{" "}
-                {lesson.xp} XP.
+                Termine os exercícios para
+                desbloquear a próxima aula.
               </p>
             </div>
 
@@ -172,9 +287,12 @@ export default function LessonPage() {
             >
               Praticar →
             </Link>
+
           </footer>
         )}
+
       </article>
+
     </main>
   );
 }

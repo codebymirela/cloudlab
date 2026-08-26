@@ -11,6 +11,13 @@ import {
   useProgress,
 } from "../hooks/useProgress";
 
+import {
+  findContinueLesson,
+  flattenLearningPath,
+  getLessonMaxXp,
+  isLessonUnlocked,
+} from "../utils/learningNavigation";
+
 export default function LearningPathPage() {
   const {
     pathId,
@@ -21,10 +28,6 @@ export default function LearningPathPage() {
     getLessonProgress,
   } = useProgress();
 
-  /*
-   * Por enquanto temos somente
-   * a trilha AWS implementada.
-   */
   if (
     pathId !==
     awsLearningPath.id
@@ -42,152 +45,93 @@ export default function LearningPathPage() {
     awsLearningPath;
 
   /*
-   * Retorna o XP máximo de uma aula.
-   *
-   * Se existirem exercícios,
-   * calculamos usando o XP real deles.
-   *
-   * Caso ainda não existam exercícios,
-   * utilizamos lesson.xp.
+   * Todas as aulas em ordem.
    */
-  function getLessonMaxXp(
-    lesson:
-      (typeof path.modules)[number]["lessons"][number],
-  ) {
-    const exerciseXp =
-      lesson.exercises.reduce(
-        (
-          total,
-          exercise,
-        ) =>
-          total +
-          exercise.xp,
-        0,
-      );
+  const flatLessons =
+    flattenLearningPath(
+      path,
+    );
 
-    return exerciseXp > 0
-      ? exerciseXp
-      : lesson.xp;
-  }
-
-  /*
-   * Quantidade total de aulas.
-   */
   const totalLessons =
-    path.modules.reduce(
-      (
-        total,
-        module,
-      ) =>
-        total +
-        module.lessons.length,
-      0,
-    );
+    flatLessons.length;
 
   /*
-   * XP máximo possível
-   * em toda a trilha.
+   * Quantas aulas já foram
+   * efetivamente finalizadas.
    */
-  const totalXp =
-    path.modules.reduce(
-      (
-        moduleTotal,
-        module,
-      ) =>
-        moduleTotal +
-        module.lessons.reduce(
-          (
-            lessonTotal,
-            lesson,
-          ) =>
-            lessonTotal +
-            getLessonMaxXp(
-              lesson,
-            ),
-          0,
+  const completedLessons =
+    flatLessons.filter(
+      (item) =>
+        Boolean(
+          getLessonProgress(
+            item.key,
+          ),
         ),
-      0,
-    );
+    ).length;
 
   /*
-   * XP obtido somente
-   * nesta trilha.
-   */
-  const earnedPathXp =
-    path.modules.reduce(
-      (
-        moduleTotal,
-        module,
-      ) =>
-        moduleTotal +
-        module.lessons.reduce(
-          (
-            lessonTotal,
-            lesson,
-          ) => {
-            const lessonKey =
-              `${path.id}:${module.id}:${lesson.id}`;
-
-            const saved =
-              getLessonProgress(
-                lessonKey,
-              );
-
-            return (
-              lessonTotal +
-              (
-                saved?.earnedXp ??
-                0
-              )
-            );
-          },
-          0,
-        ),
-      0,
-    );
-
-  /*
-   * Percentual geral.
+   * Progresso baseado em aulas,
+   * não em XP.
    */
   const pathProgress =
-    totalXp > 0
-      ? Math.min(
-          100,
-          Math.round(
-            (
-              earnedPathXp /
-              totalXp
-            ) *
-              100,
-          ),
+    totalLessons > 0
+      ? Math.round(
+          (
+            completedLessons /
+            totalLessons
+          ) *
+            100,
         )
       : 0;
 
   /*
-   * Número de aulas com
-   * desempenho de 100%.
+   * XP máximo da trilha.
    */
-  const completedLessons =
-    path.modules.reduce(
+  const totalXp =
+    flatLessons.reduce(
       (
         total,
-        module,
+        item,
       ) =>
         total +
-        module.lessons.filter(
-          (lesson) => {
-            const lessonKey =
-              `${path.id}:${module.id}:${lesson.id}`;
-
-            return (
-              getLessonProgress(
-                lessonKey,
-              )?.percentage ===
-              100
-            );
-          },
-        ).length,
+        getLessonMaxXp(
+          item.lesson,
+        ),
       0,
+    );
+
+  /*
+   * XP já obtido nessa trilha.
+   */
+  const earnedPathXp =
+    flatLessons.reduce(
+      (
+        total,
+        item,
+      ) => {
+        const saved =
+          getLessonProgress(
+            item.key,
+          );
+
+        return (
+          total +
+          (
+            saved?.earnedXp ??
+            0
+          )
+        );
+      },
+      0,
+    );
+
+  /*
+   * Próxima aula disponível.
+   */
+  const continueLesson =
+    findContinueLesson(
+      flatLessons,
+      getLessonProgress,
     );
 
   return (
@@ -201,6 +145,7 @@ export default function LearningPathPage() {
         >
           ← Trilhas
         </Link>
+
 
         <div className="path-title-row">
 
@@ -230,6 +175,7 @@ export default function LearningPathPage() {
         <div className="path-progress-card">
 
           <div className="path-progress-heading">
+
             <div>
               <strong>
                 Seu progresso
@@ -253,9 +199,12 @@ export default function LearningPathPage() {
               }
               %
             </strong>
+
           </div>
 
+
           <div className="path-progress-track">
+
             <div
               className="path-progress-fill"
               style={{
@@ -263,9 +212,12 @@ export default function LearningPathPage() {
                   `${pathProgress}%`,
               }}
             />
+
           </div>
 
+
           <div className="path-progress-xp">
+
             <span>
               ⭐ {
                 earnedPathXp
@@ -277,6 +229,47 @@ export default function LearningPathPage() {
                 totalXp
               } XP disponíveis
             </span>
+
+          </div>
+
+
+          <div className="continue-learning-area">
+
+            {continueLesson ? (
+              <Link
+                to={`/learn/${path.id}/${continueLesson.moduleId}/${continueLesson.lesson.id}`}
+                className="continue-learning-button"
+              >
+                <span>
+                  Continuar aprendendo
+                </span>
+
+                <strong>
+                  {
+                    continueLesson.lesson.title
+                  }
+                  {" →"}
+                </strong>
+              </Link>
+            ) : (
+              <div className="path-completed-message">
+                <span>
+                  🏆
+                </span>
+
+                <div>
+                  <strong>
+                    Trilha concluída!
+                  </strong>
+
+                  <small>
+                    Você completou todas
+                    as aulas disponíveis.
+                  </small>
+                </div>
+              </div>
+            )}
+
           </div>
 
         </div>
@@ -334,61 +327,42 @@ export default function LearningPathPage() {
           ) => {
 
             /*
-             * XP máximo do módulo.
+             * Progresso do módulo baseado
+             * em aulas concluídas.
              */
-            const moduleMaxXp =
-              module.lessons.reduce(
-                (
-                  total,
-                  lesson,
-                ) =>
-                  total +
-                  getLessonMaxXp(
-                    lesson,
-                  ),
-                0,
-              );
-
-            /*
-             * XP já conquistado
-             * no módulo.
-             */
-            const moduleEarnedXp =
-              module.lessons.reduce(
-                (
-                  total,
-                  lesson,
-                ) => {
-                  const lessonKey =
-                    `${path.id}:${module.id}:${lesson.id}`;
-
-                  const saved =
-                    getLessonProgress(
-                      lessonKey,
+            const moduleCompleted =
+              module.lessons.filter(
+                (lesson) => {
+                  const item =
+                    flatLessons.find(
+                      (current) =>
+                        current.moduleId ===
+                          module.id &&
+                        current.lesson.id ===
+                          lesson.id,
                     );
 
-                  return (
-                    total +
-                    (
-                      saved?.earnedXp ??
-                      0
-                    )
+                  if (!item) {
+                    return false;
+                  }
+
+                  return Boolean(
+                    getLessonProgress(
+                      item.key,
+                    ),
                   );
                 },
-                0,
-              );
+              ).length;
 
             const moduleProgress =
-              moduleMaxXp > 0
-                ? Math.min(
-                    100,
-                    Math.round(
-                      (
-                        moduleEarnedXp /
-                        moduleMaxXp
-                      ) *
-                        100,
-                    ),
+              module.lessons.length >
+              0
+                ? Math.round(
+                    (
+                      moduleCompleted /
+                      module.lessons.length
+                    ) *
+                      100,
                   )
                 : 0;
 
@@ -436,7 +410,6 @@ export default function LearningPathPage() {
 
                     </div>
 
-
                     <div className="module-progress-value">
                       {
                         moduleProgress
@@ -455,6 +428,7 @@ export default function LearningPathPage() {
 
 
                   <div className="module-progress-track">
+
                     <div
                       className="module-progress-fill"
                       style={{
@@ -462,6 +436,7 @@ export default function LearningPathPage() {
                           `${moduleProgress}%`,
                       }}
                     />
+
                   </div>
 
 
@@ -473,26 +448,92 @@ export default function LearningPathPage() {
                           lesson,
                         ) => {
 
-                          const lessonKey =
-                            `${path.id}:${module.id}:${lesson.id}`;
+                          const flatIndex =
+                            flatLessons.findIndex(
+                              (item) =>
+                                item.moduleId ===
+                                  module.id &&
+                                item.lesson.id ===
+                                  lesson.id,
+                            );
+
+                          const item =
+                            flatLessons[
+                              flatIndex
+                            ];
+
+                          if (!item) {
+                            return null;
+                          }
 
                           const lessonProgress =
                             getLessonProgress(
-                              lessonKey,
+                              item.key,
                             );
 
-                          const percentage =
-                            lessonProgress?.percentage ??
-                            0;
-
                           const completed =
-                            percentage ===
-                            100;
+                            Boolean(
+                              lessonProgress,
+                            );
 
-                          const started =
-                            percentage >
-                            0;
+                          const unlocked =
+                            isLessonUnlocked(
+                              flatLessons,
+                              flatIndex,
+                              getLessonProgress,
+                            );
 
+                          /*
+                           * Aula bloqueada.
+                           */
+                          if (!unlocked) {
+                            return (
+                              <div
+                                key={
+                                  lesson.id
+                                }
+                                className="lesson-preview lesson-locked"
+                              >
+
+                                <div className="lesson-status locked">
+                                  🔒
+                                </div>
+
+                                <div className="lesson-preview-info">
+
+                                  <strong>
+                                    {
+                                      lesson.title
+                                    }
+                                  </strong>
+
+                                  <span>
+                                    {
+                                      lesson.estimatedMinutes
+                                    }{" "}
+                                    min
+                                    {" · "}
+                                    {
+                                      getLessonMaxXp(
+                                        lesson,
+                                      )
+                                    }{" "}
+                                    XP
+                                  </span>
+
+                                </div>
+
+                                <span className="lesson-locked-label">
+                                  Bloqueada
+                                </span>
+
+                              </div>
+                            );
+                          }
+
+                          /*
+                           * Aula desbloqueada.
+                           */
                           return (
                             <Link
                               key={
@@ -502,7 +543,7 @@ export default function LearningPathPage() {
                               className={
                                 completed
                                   ? "lesson-preview lesson-completed"
-                                  : "lesson-preview"
+                                  : "lesson-preview lesson-current"
                               }
                             >
 
@@ -510,17 +551,13 @@ export default function LearningPathPage() {
                                 className={
                                   completed
                                     ? "lesson-status completed"
-                                    : started
-                                      ? "lesson-status started"
-                                      : "lesson-status"
+                                    : "lesson-status current"
                                 }
                               >
                                 {
                                   completed
                                     ? "✓"
-                                    : started
-                                      ? `${percentage}%`
-                                      : "○"
+                                    : "▶"
                                 }
                               </div>
 
@@ -550,13 +587,21 @@ export default function LearningPathPage() {
                               </div>
 
 
-                              {
-                                completed && (
-                                  <span className="lesson-complete-label">
-                                    Concluída
-                                  </span>
-                                )
-                              }
+                              {completed && (
+                                <span className="lesson-score-label">
+                                  {
+                                    lessonProgress?.percentage
+                                  }
+                                  %
+                                </span>
+                              )}
+
+
+                              {!completed && (
+                                <span className="lesson-current-label">
+                                  Disponível
+                                </span>
+                              )}
 
                             </Link>
                           );
