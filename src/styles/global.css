@@ -1943,3 +1943,231 @@ a {
 
   font-weight: 700;
 }
+/* =========================
+   PATH PROGRESS
+========================= */
+
+.path-progress-card {
+  margin-top: 32px;
+
+  padding: 20px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    var(--radius-medium);
+
+  background:
+    var(--surface);
+}
+
+.path-progress-heading {
+  display: flex;
+
+  align-items: center;
+
+  justify-content:
+    space-between;
+
+  gap: 20px;
+}
+
+.path-progress-heading > div {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.path-progress-heading strong {
+  font-size: 15px;
+}
+
+.path-progress-heading span {
+  color:
+    var(--text-secondary);
+
+  font-size: 12px;
+}
+
+.path-progress-percentage {
+  color:
+    var(--brand);
+
+  font-size:
+    24px !important;
+}
+
+.path-progress-track {
+  height: 10px;
+
+  margin-top: 16px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background:
+    #e1e7e9;
+}
+
+.path-progress-fill {
+  height: 100%;
+
+  border-radius: inherit;
+
+  background:
+    var(--brand);
+
+  transition:
+    width
+    300ms
+    ease;
+}
+
+.path-progress-xp {
+  display: flex;
+
+  justify-content:
+    space-between;
+
+  margin-top: 10px;
+
+  color:
+    var(--text-secondary);
+
+  font-size: 12px;
+}
+
+
+/* =========================
+   MODULE PROGRESS
+========================= */
+
+.module-title-area {
+  flex: 1;
+}
+
+.module-progress-value {
+  padding:
+    6px
+    9px;
+
+  border-radius: 7px;
+
+  background:
+    var(--surface-soft);
+
+  color:
+    var(--brand);
+
+  font-size: 12px;
+
+  font-weight: 800;
+}
+
+.module-progress-track {
+  width: 100%;
+
+  height: 6px;
+
+  margin:
+    0
+    0
+    16px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background:
+    #e5eaec;
+}
+
+.module-progress-fill {
+  height: 100%;
+
+  border-radius: inherit;
+
+  background:
+    var(--brand);
+
+  transition:
+    width
+    300ms
+    ease;
+}
+
+
+/* =========================
+   COMPLETED LESSONS
+========================= */
+
+.lesson-status.completed {
+  background:
+    #e6f6eb;
+
+  color:
+    #238749;
+}
+
+.lesson-status.started {
+  width: 38px;
+
+  font-size: 9px;
+
+  background:
+    #fff5df;
+
+  color:
+    #9a6912;
+}
+
+.lesson-preview.lesson-completed {
+  background:
+    #fbfdfb;
+}
+
+.lesson-complete-label {
+  margin-left: auto;
+
+  padding:
+    5px
+    8px;
+
+  border-radius: 6px;
+
+  background:
+    #e9f7ed;
+
+  color:
+    #238749;
+
+  font-size: 10px;
+
+  font-weight: 750;
+}
+
+
+/* =========================
+   PATH PROGRESS RESPONSIVE
+========================= */
+
+@media (max-width: 600px) {
+  .path-progress-xp {
+    flex-direction:
+      column;
+
+    gap: 5px;
+  }
+
+  .module-heading {
+    flex-wrap: wrap;
+  }
+
+  .lesson-complete-label {
+    display: none;
+  }
+}
