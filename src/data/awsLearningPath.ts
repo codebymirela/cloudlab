@@ -356,23 +356,332 @@ export const awsLearningPath: LearningPath = {
         },
 
         {
-          id:
-            "aws-global-infrastructure",
+  id: "aws-global-infrastructure",
 
-          title:
-            "AWS Global Infrastructure",
+  title: "AWS Global Infrastructure",
 
-          description:
-            "Aprenda sobre Regions, Availability Zones e Edge Locations.",
+  description:
+    "Entenda como a infraestrutura global da AWS é organizada em Regions, Availability Zones e Edge Locations.",
 
-          estimatedMinutes: 6,
+  estimatedMinutes: 8,
 
-          xp: 40,
+  xp: 40,
 
-          content: [],
+  content: [
+    {
+      id: "introduction",
 
-          exercises: [],
+      title: "Infraestrutura global da AWS",
+
+      content:
+        "A AWS opera uma infraestrutura distribuída globalmente. Em vez de manter todos os recursos em um único local físico, a plataforma organiza sua infraestrutura em diferentes áreas geográficas para oferecer disponibilidade, baixa latência, escalabilidade e maior resiliência.",
+    },
+
+    {
+      id: "regions",
+
+      title: "AWS Regions",
+
+      content:
+        "Uma AWS Region é uma área geográfica física onde a AWS possui infraestrutura. Exemplos incluem us-east-1, eu-west-1 e sa-east-1. Ao criar muitos recursos AWS, o cliente escolhe em qual Region eles serão executados. A escolha pode depender de fatores como latência, custo, requisitos regulatórios, disponibilidade de serviços e proximidade dos usuários.",
+    },
+
+    {
+      id: "region-independence",
+
+      title: "Regions são independentes",
+
+      content:
+        "As Regions são projetadas para operar de forma independente umas das outras. Recursos criados em uma Region normalmente não são automaticamente replicados para outra Region. Quando uma aplicação precisa operar em múltiplas Regions, essa arquitetura deve ser planejada e configurada.",
+    },
+
+    {
+      id: "availability-zones",
+
+      title: "Availability Zones",
+
+      content:
+        "Cada Region possui múltiplas Availability Zones, também chamadas de AZs. Uma Availability Zone representa uma ou mais instalações de data center com infraestrutura independente de energia, rede e conectividade. As AZs de uma mesma Region são conectadas por redes de baixa latência e alta capacidade.",
+    },
+
+    {
+      id: "high-availability",
+
+      title: "Por que utilizar múltiplas AZs?",
+
+      content:
+        "Distribuir uma aplicação entre múltiplas Availability Zones reduz o risco de um único ponto de falha. Por exemplo, uma aplicação pode executar instâncias EC2 em duas AZs diferentes atrás de um Application Load Balancer. Se uma AZ apresentar problemas, a aplicação pode continuar atendendo usuários através da outra.",
+    },
+
+    {
+      id: "edge-locations",
+
+      title: "Edge Locations",
+
+      content:
+        "Edge Locations são pontos da infraestrutura global utilizados principalmente para entregar conteúdo e serviços mais próximos dos usuários finais. Serviços como Amazon CloudFront utilizam essa infraestrutura para armazenar conteúdo em cache e reduzir a latência de entrega.",
+    },
+
+    {
+      id: "cloudfront-example",
+
+      title: "Exemplo com CloudFront",
+
+      content:
+        "Imagine uma aplicação hospedada em uma Region nos Estados Unidos e um usuário acessando o site no Brasil. Sem uma rede de distribuição de conteúdo, várias requisições precisariam percorrer uma longa distância. Com Amazon CloudFront, conteúdo em cache pode ser entregue através de uma localização de borda mais próxima do usuário.",
+    },
+
+    {
+      id: "region-vs-az",
+
+      title: "Region vs. Availability Zone",
+
+      content:
+        "Uma Region representa uma área geográfica maior. Dentro dessa Region existem múltiplas Availability Zones. Portanto, uma AZ pertence a uma Region. Uma arquitetura Multi-AZ utiliza múltiplas Availability Zones dentro de uma mesma Region, enquanto uma arquitetura Multi-Region utiliza duas ou mais Regions.",
+    },
+
+    {
+      id: "summary",
+
+      title: "Resumo",
+
+      content:
+        "A infraestrutura global da AWS pode ser entendida em três níveis principais: Regions representam áreas geográficas, Availability Zones fornecem isolamento e alta disponibilidade dentro de uma Region, e Edge Locations ajudam a entregar conteúdo e serviços mais próximos dos usuários.",
+    },
+  ],
+
+  exercises: [
+    {
+      id: "global-infrastructure-question-1",
+
+      type: "multiple-choice",
+
+      question:
+        "O que é uma AWS Region?",
+
+      options: [
+        {
+          id: "a",
+
+          text:
+            "Um único servidor físico utilizado pela AWS.",
         },
+
+        {
+          id: "b",
+
+          text:
+            "Uma área geográfica onde a AWS mantém infraestrutura.",
+        },
+
+        {
+          id: "c",
+
+          text:
+            "Uma rede privada criada dentro de uma conta AWS.",
+        },
+
+        {
+          id: "d",
+
+          text:
+            "Um tipo de instância Amazon EC2.",
+        },
+      ],
+
+      correctAnswer: "b",
+
+      explanation:
+        "Uma AWS Region é uma área geográfica física onde a AWS possui infraestrutura e oferece seus serviços.",
+      
+      xp: 8,
+    },
+
+    {
+      id: "global-infrastructure-question-2",
+
+      type: "multiple-choice",
+
+      question:
+        "Qual é a relação correta entre uma Region e uma Availability Zone?",
+
+      options: [
+        {
+          id: "a",
+
+          text:
+            "Uma Availability Zone contém várias Regions.",
+        },
+
+        {
+          id: "b",
+
+          text:
+            "Uma Region contém múltiplas Availability Zones.",
+        },
+
+        {
+          id: "c",
+
+          text:
+            "Regions e Availability Zones representam exatamente a mesma coisa.",
+        },
+
+        {
+          id: "d",
+
+          text:
+            "Availability Zones existem apenas para serviços de banco de dados.",
+        },
+      ],
+
+      correctAnswer: "b",
+
+      explanation:
+        "Uma AWS Region é composta por múltiplas Availability Zones, permitindo arquiteturas resilientes dentro da mesma área geográfica.",
+
+      xp: 8,
+    },
+
+    {
+      id: "global-infrastructure-question-3",
+
+      type: "multiple-choice",
+
+      question:
+        "Uma aplicação precisa continuar funcionando mesmo se uma Availability Zone apresentar uma falha. Qual abordagem é mais adequada?",
+
+      options: [
+        {
+          id: "a",
+
+          text:
+            "Executar toda a aplicação em uma única EC2.",
+        },
+
+        {
+          id: "b",
+
+          text:
+            "Executar recursos em múltiplas Availability Zones.",
+        },
+
+        {
+          id: "c",
+
+          text:
+            "Colocar todos os recursos em uma única subnet.",
+        },
+
+        {
+          id: "d",
+
+          text:
+            "Utilizar apenas uma Availability Zone com instâncias maiores.",
+        },
+      ],
+
+      correctAnswer: "b",
+
+      explanation:
+        "Distribuir os recursos entre múltiplas Availability Zones reduz a dependência de um único local e aumenta a disponibilidade da aplicação.",
+
+      xp: 8,
+    },
+
+    {
+      id: "global-infrastructure-question-4",
+
+      type: "multiple-choice",
+
+      question:
+        "Qual serviço utiliza Edge Locations para entregar conteúdo com menor latência aos usuários?",
+
+      options: [
+        {
+          id: "a",
+
+          text:
+            "Amazon CloudFront",
+        },
+
+        {
+          id: "b",
+
+          text:
+            "Amazon RDS",
+        },
+
+        {
+          id: "c",
+
+          text:
+            "AWS IAM",
+        },
+
+        {
+          id: "d",
+
+          text:
+            "Amazon EBS",
+        },
+      ],
+
+      correctAnswer: "a",
+
+      explanation:
+        "Amazon CloudFront é uma CDN que utiliza a infraestrutura de edge locations para entregar conteúdo mais próximo dos usuários finais.",
+
+      xp: 8,
+    },
+
+    {
+      id: "global-infrastructure-question-5",
+
+      type: "multiple-choice",
+
+      question:
+        "Qual alternativa representa uma arquitetura Multi-Region?",
+
+      options: [
+        {
+          id: "a",
+
+          text:
+            "Duas instâncias EC2 em duas subnets da mesma Availability Zone.",
+        },
+
+        {
+          id: "b",
+
+          text:
+            "Recursos distribuídos entre us-east-1 e eu-west-1.",
+        },
+
+        {
+          id: "c",
+
+          text:
+            "Um Application Load Balancer com duas instâncias na mesma AZ.",
+        },
+
+        {
+          id: "d",
+
+          text:
+            "Um bucket S3 contendo múltiplos objetos.",
+        },
+      ],
+
+      correctAnswer: "b",
+
+      explanation:
+        "Uma arquitetura Multi-Region utiliza recursos em duas ou mais AWS Regions. us-east-1 e eu-west-1 representam Regions diferentes.",
+
+      xp: 8,
+    },
+  ],
+},
 
         {
           id:
