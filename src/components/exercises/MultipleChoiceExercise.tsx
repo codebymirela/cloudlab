@@ -9,25 +9,24 @@ import type {
 type MultipleChoiceExerciseProps = {
   exercise: Exercise;
 
-  onAnswered: (
+  onNext: (
     earnedXp: number,
   ) => void;
-
-  onNext: () => void;
 
   isLastExercise: boolean;
 };
 
 export default function MultipleChoiceExercise({
   exercise,
-  onAnswered,
   onNext,
   isLastExercise,
 }: MultipleChoiceExerciseProps) {
   const [
     selectedOption,
     setSelectedOption,
-  ] = useState<string | null>(null);
+  ] = useState<string | null>(
+    null,
+  );
 
   const [
     checked,
@@ -48,16 +47,19 @@ export default function MultipleChoiceExercise({
       selectedOption ===
       exercise.correctAnswer;
 
-    setIsCorrect(correct);
+    setIsCorrect(
+      correct,
+    );
 
-    setChecked(true);
-
-    onAnswered(
-      correct
-        ? exercise.xp
-        : 0,
+    setChecked(
+      true,
     );
   }
+
+  const earnedXp =
+    isCorrect
+      ? exercise.xp
+      : 0;
 
   return (
     <section className="exercise-card">
@@ -106,12 +108,16 @@ export default function MultipleChoiceExercise({
 
             return (
               <button
-                key={option.id}
+                key={
+                  option.id
+                }
                 type="button"
                 className={
                   className
                 }
-                disabled={checked}
+                disabled={
+                  checked
+                }
                 onClick={() =>
                   setSelectedOption(
                     option.id,
@@ -177,7 +183,11 @@ export default function MultipleChoiceExercise({
           <button
             type="button"
             className="continue-button"
-            onClick={onNext}
+            onClick={() =>
+              onNext(
+                earnedXp,
+              )
+            }
           >
             {isLastExercise
               ? "Ver resultado →"

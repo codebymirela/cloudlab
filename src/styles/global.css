@@ -1904,3 +1904,42 @@ a {
       column;
   }
 }
+.previous-score {
+  margin:
+    8px
+    0
+    0;
+
+  color:
+    var(--text-secondary);
+
+  font-size: 13px;
+
+  font-weight: 650;
+}
+
+.xp-saved-message {
+  margin:
+    -8px
+    0
+    28px;
+
+  padding:
+    13px
+    16px;
+
+  border:
+    1px solid #cfe2d4;
+
+  border-radius: 9px;
+
+  background:
+    #f1f9f3;
+
+  color:
+    #28683c;
+
+  font-size: 14px;
+
+  font-weight: 700;
+}

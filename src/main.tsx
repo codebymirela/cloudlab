@@ -1,17 +1,33 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import { BrowserRouter } from "react-router";
+import {
+  StrictMode,
+} from "react";
+
+import {
+  createRoot,
+} from "react-dom/client";
+
+import {
+  BrowserRouter,
+} from "react-router";
 
 import App from "./App";
+
+import {
+  ProgressProvider,
+} from "./contexts/ProgressProvider";
 
 import "./styles/global.css";
 
 createRoot(
-  document.getElementById("root")!,
+  document.getElementById(
+    "root",
+  )!,
 ).render(
   <StrictMode>
     <BrowserRouter>
-      <App />
+      <ProgressProvider>
+        <App />
+      </ProgressProvider>
     </BrowserRouter>
   </StrictMode>,
 );

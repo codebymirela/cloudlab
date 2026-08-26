@@ -3,7 +3,15 @@ import {
   NavLink,
 } from "react-router";
 
+import {
+  useProgress,
+} from "../../hooks/useProgress";
+
 export default function Header() {
+  const {
+    progress,
+  } = useProgress();
+
   return (
     <header className="header">
       <Link
@@ -22,7 +30,9 @@ export default function Header() {
       <nav className="navigation">
         <NavLink
           to="/learn"
-          className={({ isActive }) =>
+          className={({
+            isActive,
+          }) =>
             isActive
               ? "nav-link active"
               : "nav-link"
@@ -33,7 +43,9 @@ export default function Header() {
 
         <NavLink
           to="/build"
-          className={({ isActive }) =>
+          className={({
+            isActive,
+          }) =>
             isActive
               ? "nav-link active"
               : "nav-link"
@@ -45,11 +57,11 @@ export default function Header() {
 
       <div className="user-stats">
         <span>
-          ⭐ 0 XP
+          ⭐ {progress.totalXp} XP
         </span>
 
         <span>
-          🔥 0
+          🔥 {progress.streak}
         </span>
       </div>
     </header>
