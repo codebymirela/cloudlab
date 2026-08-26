@@ -9,6 +9,7 @@ import HomePage from "./pages/HomePage";
 import LearnPage from "./pages/LearnPage";
 import LearningPathPage from "./pages/LearningPathPage";
 import LessonPage from "./pages/LessonPage";
+import PracticePage from "./pages/PracticePage";
 import BuildPage from "./pages/BuildPage";
 
 export default function App() {
@@ -29,12 +30,23 @@ export default function App() {
 
         <Route
           path="/learn/:pathId"
-          element={<LearningPathPage />}
+          element={
+            <LearningPathPage />
+          }
+        />
+
+        <Route
+          path="/learn/:pathId/:moduleId/:lessonId/practice"
+          element={
+            <PracticePage />
+          }
         />
 
         <Route
           path="/learn/:pathId/:moduleId/:lessonId"
-          element={<LessonPage />}
+          element={
+            <LessonPage />
+          }
         />
 
         <Route

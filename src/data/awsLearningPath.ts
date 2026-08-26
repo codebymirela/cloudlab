@@ -49,7 +49,8 @@ export const awsLearningPath: LearningPath = {
             {
               id: "traditional-infrastructure",
 
-              title: "Infraestrutura tradicional",
+              title:
+                "Infraestrutura tradicional",
 
               content:
                 "Em um modelo tradicional, uma empresa precisa estimar antecipadamente a quantidade de infraestrutura necessária, comprar servidores, preparar um data center, configurar redes, instalar sistemas e manter todo esse ambiente. Isso exige investimento inicial e pode resultar tanto em falta quanto em excesso de capacidade.",
@@ -58,7 +59,8 @@ export const awsLearningPath: LearningPath = {
             {
               id: "cloud-model",
 
-              title: "O modelo de Cloud Computing",
+              title:
+                "O modelo de Cloud Computing",
 
               content:
                 "Na nuvem, recursos podem ser provisionados em minutos. Uma aplicação pode utilizar servidores virtuais, armazenamento, bancos de dados e diversos outros serviços sem que a empresa precise possuir fisicamente o hardware utilizado.",
@@ -67,7 +69,8 @@ export const awsLearningPath: LearningPath = {
             {
               id: "on-demand",
 
-              title: "On-demand",
+              title:
+                "On-demand",
 
               content:
                 "Um dos conceitos centrais da nuvem é o consumo sob demanda. Recursos podem ser criados quando necessários e removidos quando deixam de ser necessários. Isso permite que a infraestrutura acompanhe as necessidades reais da aplicação.",
@@ -76,7 +79,8 @@ export const awsLearningPath: LearningPath = {
             {
               id: "pay-as-you-go",
 
-              title: "Pay-as-you-go",
+              title:
+                "Pay-as-you-go",
 
               content:
                 "Outro conceito importante é o modelo pay-as-you-go. Em muitos serviços de nuvem, o cliente paga de acordo com o consumo realizado, reduzindo a necessidade de grandes investimentos antecipados em hardware.",
@@ -85,7 +89,8 @@ export const awsLearningPath: LearningPath = {
             {
               id: "elasticity",
 
-              title: "Elasticidade",
+              title:
+                "Elasticidade",
 
               content:
                 "Cloud Computing também permite aumentar ou reduzir recursos de acordo com a demanda. Uma aplicação que recebe muito tráfego em determinado período pode aumentar sua capacidade e reduzi-la posteriormente.",
@@ -94,7 +99,8 @@ export const awsLearningPath: LearningPath = {
             {
               id: "aws",
 
-              title: "Onde entra a AWS?",
+              title:
+                "Onde entra a AWS?",
 
               content:
                 "A Amazon Web Services, ou AWS, é uma plataforma de Cloud Computing que oferece serviços de compute, storage, networking, databases, analytics, security, machine learning e diversas outras categorias.",
@@ -103,20 +109,258 @@ export const awsLearningPath: LearningPath = {
             {
               id: "summary",
 
-              title: "Resumo",
+              title:
+                "Resumo",
 
               content:
                 "Cloud Computing permite consumir infraestrutura e serviços de tecnologia pela internet de maneira sob demanda, escalável e com modelos de cobrança baseados em uso.",
             },
           ],
 
-          exercises: [],
+          exercises: [
+            {
+              id: "cloud-question-1",
+
+              type:
+                "multiple-choice",
+
+              question:
+                "Qual alternativa descreve melhor Cloud Computing?",
+
+              options: [
+                {
+                  id: "a",
+
+                  text:
+                    "Comprar servidores físicos para cada nova aplicação.",
+                },
+
+                {
+                  id: "b",
+
+                  text:
+                    "Consumir recursos computacionais sob demanda através da internet.",
+                },
+
+                {
+                  id: "c",
+
+                  text:
+                    "Instalar sistemas operacionais apenas em computadores locais.",
+                },
+
+                {
+                  id: "d",
+
+                  text:
+                    "Criar exclusivamente redes privadas dentro de um data center.",
+                },
+              ],
+
+              correctAnswer: "b",
+
+              explanation:
+                "Cloud Computing permite consumir recursos como compute, storage, databases e networking sob demanda, sem que o cliente precise possuir fisicamente toda a infraestrutura.",
+
+              xp: 6,
+            },
+
+            {
+              id: "cloud-question-2",
+
+              type:
+                "multiple-choice",
+
+              question:
+                "O que significa o conceito de on-demand em Cloud Computing?",
+
+              options: [
+                {
+                  id: "a",
+
+                  text:
+                    "Os recursos precisam ser comprados vários meses antes de serem utilizados.",
+                },
+
+                {
+                  id: "b",
+
+                  text:
+                    "Os recursos podem ser provisionados quando forem necessários.",
+                },
+
+                {
+                  id: "c",
+
+                  text:
+                    "Todos os servidores precisam permanecer ligados permanentemente.",
+                },
+
+                {
+                  id: "d",
+
+                  text:
+                    "O cliente precisa administrar o hardware físico do provedor.",
+                },
+              ],
+
+              correctAnswer: "b",
+
+              explanation:
+                "On-demand significa que recursos podem ser provisionados conforme a necessidade, sem depender da compra e instalação antecipada de hardware.",
+
+              xp: 6,
+            },
+
+            {
+              id: "cloud-question-3",
+
+              type:
+                "multiple-choice",
+
+              question:
+                "Qual é uma das principais vantagens do modelo pay-as-you-go?",
+
+              options: [
+                {
+                  id: "a",
+
+                  text:
+                    "O cliente sempre paga o mesmo valor independentemente do consumo.",
+                },
+
+                {
+                  id: "b",
+
+                  text:
+                    "Todo hardware passa a pertencer ao cliente.",
+                },
+
+                {
+                  id: "c",
+
+                  text:
+                    "O custo pode acompanhar o nível de utilização dos recursos.",
+                },
+
+                {
+                  id: "d",
+
+                  text:
+                    "Não existem custos relacionados ao uso da nuvem.",
+                },
+              ],
+
+              correctAnswer: "c",
+
+              explanation:
+                "No modelo pay-as-you-go, muitos serviços são cobrados de acordo com o consumo, reduzindo a necessidade de grandes investimentos iniciais em infraestrutura.",
+
+              xp: 6,
+            },
+
+            {
+              id: "cloud-question-4",
+
+              type:
+                "multiple-choice",
+
+              question:
+                "Uma aplicação aumenta automaticamente sua capacidade durante períodos de alta demanda e reduz posteriormente. Qual conceito isso representa?",
+
+              options: [
+                {
+                  id: "a",
+
+                  text:
+                    "Elasticidade",
+                },
+
+                {
+                  id: "b",
+
+                  text:
+                    "Virtualização local",
+                },
+
+                {
+                  id: "c",
+
+                  text:
+                    "Data center dedicado",
+                },
+
+                {
+                  id: "d",
+
+                  text:
+                    "Capacidade fixa",
+                },
+              ],
+
+              correctAnswer: "a",
+
+              explanation:
+                "Elasticidade é a capacidade de aumentar ou reduzir recursos de acordo com mudanças na demanda.",
+
+              xp: 6,
+            },
+
+            {
+              id: "cloud-question-5",
+
+              type:
+                "multiple-choice",
+
+              question:
+                "Qual das opções abaixo é um provedor de Cloud Computing?",
+
+              options: [
+                {
+                  id: "a",
+
+                  text:
+                    "Amazon Web Services",
+                },
+
+                {
+                  id: "b",
+
+                  text:
+                    "Git",
+                },
+
+                {
+                  id: "c",
+
+                  text:
+                    "Linux Kernel",
+                },
+
+                {
+                  id: "d",
+
+                  text:
+                    "Visual Studio Code",
+                },
+              ],
+
+              correctAnswer: "a",
+
+              explanation:
+                "Amazon Web Services (AWS) é uma plataforma de Cloud Computing que oferece centenas de serviços de infraestrutura e plataforma.",
+
+              xp: 6,
+            },
+          ],
         },
 
         {
-          id: "aws-global-infrastructure",
+          id:
+            "aws-global-infrastructure",
 
-          title: "AWS Global Infrastructure",
+          title:
+            "AWS Global Infrastructure",
 
           description:
             "Aprenda sobre Regions, Availability Zones e Edge Locations.",
@@ -131,9 +375,11 @@ export const awsLearningPath: LearningPath = {
         },
 
         {
-          id: "shared-responsibility",
+          id:
+            "shared-responsibility",
 
-          title: "Shared Responsibility Model",
+          title:
+            "Shared Responsibility Model",
 
           description:
             "Entenda o que é responsabilidade da AWS e o que é responsabilidade do cliente.",
@@ -152,7 +398,8 @@ export const awsLearningPath: LearningPath = {
     {
       id: "iam",
 
-      title: "Identity & Access Management",
+      title:
+        "Identity & Access Management",
 
       description:
         "Aprenda Users, Groups, Roles, Policies e boas práticas de segurança.",
@@ -161,9 +408,11 @@ export const awsLearningPath: LearningPath = {
 
       lessons: [
         {
-          id: "iam-introduction",
+          id:
+            "iam-introduction",
 
-          title: "Introduction to IAM",
+          title:
+            "Introduction to IAM",
 
           description:
             "Conheça os principais componentes do AWS IAM.",
@@ -178,9 +427,11 @@ export const awsLearningPath: LearningPath = {
         },
 
         {
-          id: "iam-policies",
+          id:
+            "iam-policies",
 
-          title: "IAM Policies",
+          title:
+            "IAM Policies",
 
           description:
             "Entenda como políticas IAM controlam permissões.",
@@ -199,7 +450,8 @@ export const awsLearningPath: LearningPath = {
     {
       id: "ec2",
 
-      title: "Amazon EC2",
+      title:
+        "Amazon EC2",
 
       description:
         "Aprenda instâncias, AMIs, Security Groups, storage e modelos de compra.",
@@ -210,7 +462,8 @@ export const awsLearningPath: LearningPath = {
         {
           id: "ec2-basics",
 
-          title: "EC2 Fundamentals",
+          title:
+            "EC2 Fundamentals",
 
           description:
             "Entenda como funcionam as instâncias EC2.",
@@ -229,7 +482,8 @@ export const awsLearningPath: LearningPath = {
     {
       id: "s3",
 
-      title: "Amazon S3",
+      title:
+        "Amazon S3",
 
       description:
         "Object Storage, buckets, storage classes, permissions e lifecycle.",
@@ -240,7 +494,8 @@ export const awsLearningPath: LearningPath = {
         {
           id: "s3-basics",
 
-          title: "S3 Fundamentals",
+          title:
+            "S3 Fundamentals",
 
           description:
             "Conheça buckets, objects e os principais conceitos do Amazon S3.",
@@ -259,7 +514,8 @@ export const awsLearningPath: LearningPath = {
     {
       id: "vpc",
 
-      title: "Amazon VPC",
+      title:
+        "Amazon VPC",
 
       description:
         "Networking AWS: subnets, route tables, Internet Gateway, NAT Gateway e Security Groups.",
@@ -270,7 +526,8 @@ export const awsLearningPath: LearningPath = {
         {
           id: "vpc-basics",
 
-          title: "VPC Fundamentals",
+          title:
+            "VPC Fundamentals",
 
           description:
             "Entenda como uma rede virtual funciona dentro da AWS.",

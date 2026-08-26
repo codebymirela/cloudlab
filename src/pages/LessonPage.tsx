@@ -43,7 +43,8 @@ export default function LessonPage() {
   const lesson =
     learningModule.lessons.find(
       (currentLesson) =>
-        currentLesson.id === lessonId,
+        currentLesson.id ===
+        lessonId,
     );
 
   if (!lesson) {
@@ -100,7 +101,8 @@ export default function LessonPage() {
           </p>
         </header>
 
-        {lesson.content.length > 0 ? (
+        {lesson.content.length >
+        0 ? (
           <div className="lesson-sections">
             {lesson.content.map(
               (section) => (
@@ -110,12 +112,16 @@ export default function LessonPage() {
                 >
                   {section.title && (
                     <h2>
-                      {section.title}
+                      {
+                        section.title
+                      }
                     </h2>
                   )}
 
                   <p>
-                    {section.content}
+                    {
+                      section.content
+                    }
                   </p>
                 </section>
               ),
@@ -128,17 +134,21 @@ export default function LessonPage() {
             </span>
 
             <h2>
-              Esta aula ainda está sendo preparada.
+              Esta aula ainda está
+              sendo preparada.
             </h2>
 
             <p>
-              O conteúdo desta aula será adicionado
-              nas próximas etapas do projeto.
+              O conteúdo desta aula
+              será adicionado nas
+              próximas etapas do
+              projeto.
             </p>
           </div>
         )}
 
-        {lesson.content.length > 0 && (
+        {lesson.content.length >
+          0 && (
           <footer className="lesson-footer">
             <div>
               <span className="eyebrow">
@@ -150,17 +160,18 @@ export default function LessonPage() {
               </h2>
 
               <p>
-                Na próxima etapa adicionaremos
-                exercícios relacionados a esta aula.
+                Teste o que você
+                aprendeu e acumule até{" "}
+                {lesson.xp} XP.
               </p>
             </div>
 
-            <button
-              type="button"
+            <Link
+              to={`/learn/${pathId}/${moduleId}/${lessonId}/practice`}
               className="primary-button"
             >
               Praticar →
-            </button>
+            </Link>
           </footer>
         )}
       </article>
