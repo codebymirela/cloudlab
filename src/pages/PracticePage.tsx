@@ -1,4 +1,6 @@
-import { useState } from "react";
+import {
+  useState,
+} from "react";
 
 import {
   Link,
@@ -53,10 +55,33 @@ export default function PracticePage() {
     setFinalAttemptXp,
   ] = useState(0);
 
+  const [
+    finalPercentage,
+    setFinalPercentage,
+  ] = useState(0);
+
+  const [
+    bestPercentage,
+    setBestPercentage,
+  ] = useState(0);
+
+  const [
+    attemptNumber,
+    setAttemptNumber,
+  ] = useState(0);
+
+  const [
+    isNewBest,
+    setIsNewBest,
+  ] = useState(false);
+
   /*
-   * Validação da learning path.
+   * Learning path.
    */
-  if (pathId !== "aws") {
+  if (
+    pathId !==
+    awsLearningPath.id
+  ) {
     return (
       <main className="page-container">
         <h1>
@@ -67,7 +92,7 @@ export default function PracticePage() {
   }
 
   /*
-   * Busca o módulo informado na URL.
+   * Módulo.
    */
   const learningModule =
     awsLearningPath.modules.find(
@@ -86,12 +111,13 @@ export default function PracticePage() {
   }
 
   /*
-   * Busca a aula dentro do módulo.
+   * Aula.
    */
   const lesson =
     learningModule.lessons.find(
       (currentLesson) =>
-        currentLesson.id === lessonId,
+        currentLesson.id ===
+        lessonId,
     );
 
   if (!lesson) {
@@ -104,30 +130,20 @@ export default function PracticePage() {
     );
   }
 
-  /*
-   * Chave única e estável da aula.
-   *
-   * É melhor usar os IDs encontrados
-   * nos dados do que depender diretamente
-   * dos valores recebidos pela URL.
-   */
   const lessonKey =
     `${awsLearningPath.id}:${learningModule.id}:${lesson.id}`;
 
-  /*
-   * Melhor resultado salvo anteriormente.
-   */
   const previousProgress =
     getLessonProgress(
       lessonKey,
     );
 
   /*
-   * A aula existe, mas ainda não possui
-   * exercícios cadastrados.
+   * Sem exercícios.
    */
   if (
-    lesson.exercises.length === 0
+    lesson.exercises.length ===
+    0
   ) {
     return (
       <main className="practice-page">
@@ -156,18 +172,12 @@ export default function PracticePage() {
     );
   }
 
-  /*
-   * Quantidade total de exercícios.
-   */
   const totalExercises =
     lesson.exercises.length;
 
   /*
-   * XP máximo real da prática.
-   *
-   * Dessa forma, caso o XP das questões
-   * seja alterado futuramente, o resultado
-   * continuará correto automaticamente.
+   * XP máximo calculado diretamente
+   * pelas questões.
    */
   const maxExerciseXp =
     lesson.exercises.reduce(
@@ -175,21 +185,16 @@ export default function PracticePage() {
         total,
         exercise,
       ) =>
-        total + exercise.xp,
+        total +
+        exercise.xp,
       0,
     );
 
-  /*
-   * Exercício atualmente exibido.
-   */
   const currentExercise =
     lesson.exercises[
       currentExerciseIndex
     ];
 
-  /*
-   * Proteção contra índice inválido.
-   */
   if (!currentExercise) {
     return (
       <main className="practice-page">
@@ -219,48 +224,31 @@ export default function PracticePage() {
   }
 
   /*
-   * Progresso visual.
-   *
-   * Na primeira questão:
-   * 0 de 5 concluídas = 0%
-   *
-   * Na segunda:
-   * 1 de 5 concluída = 20%
-   *
-   * Ao terminar:
-   * 100%
+   * Barra de progresso da tentativa.
    */
-  const rawProgress =
+  const progressPercentage =
     completed
       ? 100
-      : (
-          currentExerciseIndex /
-          totalExercises
-        ) * 100;
-
-  const progressPercentage =
-    Math.min(
-      100,
-      Math.max(
-        0,
-        rawProgress,
-      ),
-    );
+      : Math.min(
+          100,
+          Math.max(
+            0,
+            (
+              currentExerciseIndex /
+              totalExercises
+            ) * 100,
+          ),
+        );
 
   /*
-   * Chamado quando o usuário termina
-   * uma questão e clica para continuar.
+   * Finalização de cada questão.
    */
   function handleNext(
     questionXp: number,
   ) {
-    /*
-     * Calculamos o novo valor diretamente
-     * para não depender da atualização
-     * assíncrona do useState.
-     */
     const updatedXp =
-      earnedXp + questionXp;
+      earnedXp +
+      questionXp;
 
     setEarnedXp(
       updatedXp,
@@ -271,7 +259,7 @@ export default function PracticePage() {
       totalExercises - 1;
 
     /*
-     * Ainda existem perguntas.
+     * Próxima questão.
      */
     if (!isLastExercise) {
       setCurrentExerciseIndex(
@@ -283,8 +271,7 @@ export default function PracticePage() {
     }
 
     /*
-     * Última pergunta:
-     * salva o resultado persistente.
+     * Última questão.
      */
     const result =
       completeLesson({
@@ -297,13 +284,24 @@ export default function PracticePage() {
           maxExerciseXp,
       });
 
-    /*
-     * Guardamos separadamente o XP
-     * final porque ele será utilizado
-     * na tela de resultados.
-     */
     setFinalAttemptXp(
       updatedXp,
+    );
+
+    setFinalPercentage(
+      result.attemptPercentage,
+    );
+
+    setBestPercentage(
+      result.bestPercentage,
+    );
+
+    setAttemptNumber(
+      result.attempts,
+    );
+
+    setIsNewBest(
+      result.newBest,
     );
 
     setXpAdded(
@@ -316,33 +314,17 @@ export default function PracticePage() {
   }
 
   /*
-   * Tela final da prática.
+   * Resultado final.
    */
   if (completed) {
-    const rawPercentage =
-      maxExerciseXp > 0
-        ? (
-            finalAttemptXp /
-            maxExerciseXp
-          ) * 100
-        : 0;
-
-    const percentage =
-      Math.min(
-        100,
-        Math.max(
-          0,
-          Math.round(
-            rawPercentage,
-          ),
-        ),
-      );
-
     return (
       <main className="practice-page">
         <section className="practice-result">
+
           <div className="result-icon">
-            🎉
+            {isNewBest
+              ? "🏆"
+              : "🎉"}
           </div>
 
           <span className="eyebrow">
@@ -359,12 +341,22 @@ export default function PracticePage() {
               {lesson.title}
             </strong>
             .
+            {" "}
+            Desempenho desta tentativa:{" "}
+            <strong>
+              {finalPercentage}%
+            </strong>
+            .
           </p>
 
+
           <div className="result-stats">
+
             <div>
               <strong>
                 {finalAttemptXp}
+                /
+                {maxExerciseXp}
               </strong>
 
               <span>
@@ -372,26 +364,37 @@ export default function PracticePage() {
               </span>
             </div>
 
-            <div>
-              <strong>
-                {maxExerciseXp}
-              </strong>
-
-              <span>
-                XP máximo
-              </span>
-            </div>
 
             <div>
               <strong>
-                {percentage}%
+                {bestPercentage}%
               </strong>
 
               <span>
-                desempenho
+                melhor resultado
               </span>
             </div>
+
+
+            <div>
+              <strong>
+                {attemptNumber}
+              </strong>
+
+              <span>
+                tentativas
+              </span>
+            </div>
+
           </div>
+
+
+          {isNewBest && (
+            <div className="xp-saved-message">
+              🏆 Novo melhor resultado!
+            </div>
+          )}
+
 
           {xpAdded > 0 ? (
             <div className="xp-saved-message">
@@ -400,13 +403,15 @@ export default function PracticePage() {
             </div>
           ) : (
             <div className="xp-saved-message">
-              Seu melhor resultado já era
-              igual ou superior ao desta
-              tentativa.
+              Nenhum XP adicional nesta
+              tentativa. Seu melhor resultado
+              continua salvo.
             </div>
           )}
 
+
           <div className="result-actions">
+
             <Link
               to={`/learn/${awsLearningPath.id}`}
               className="secondary-button"
@@ -420,20 +425,26 @@ export default function PracticePage() {
             >
               Rever aula
             </Link>
+
           </div>
+
         </section>
       </main>
     );
   }
 
   /*
-   * Tela normal da prática.
+   * Tela de prática.
    */
   return (
     <main className="practice-page">
+
       <section className="practice-wrapper">
+
         <header className="practice-header">
+
           <div>
+
             <Link
               to={`/learn/${awsLearningPath.id}/${learningModule.id}/${lesson.id}`}
               className="back-link"
@@ -442,12 +453,15 @@ export default function PracticePage() {
             </Link>
 
             <span className="eyebrow">
-              {learningModule.title}
+              {
+                learningModule.title
+              }
             </span>
 
             <h1>
               {lesson.title}
             </h1>
+
 
             {previousProgress && (
               <p className="previous-score">
@@ -456,35 +470,57 @@ export default function PracticePage() {
                   previousProgress.percentage
                 }
                 %
+                {" · "}
+                {
+                  previousProgress.attempts
+                }{" "}
+                {
+                  previousProgress.attempts ===
+                  1
+                    ? "tentativa"
+                    : "tentativas"
+                }
               </p>
             )}
+
           </div>
+
 
           <div className="practice-xp">
             ⭐ {earnedXp} XP
           </div>
+
         </header>
 
+
         <div className="practice-progress">
+
           <div className="progress-info">
+
             <span>
               Questão{" "}
               {
                 currentExerciseIndex +
                 1
               }{" "}
-              de {totalExercises}
+              de{" "}
+              {totalExercises}
             </span>
 
             <span>
-              {Math.round(
-                progressPercentage,
-              )}
+              {
+                Math.round(
+                  progressPercentage,
+                )
+              }
               %
             </span>
+
           </div>
 
+
           <div className="progress-track">
+
             <div
               className="progress-fill"
               style={{
@@ -492,11 +528,15 @@ export default function PracticePage() {
                   `${progressPercentage}%`,
               }}
             />
+
           </div>
+
         </div>
+
 
         {currentExercise.type ===
         "multiple-choice" ? (
+
           <MultipleChoiceExercise
             key={
               currentExercise.id
@@ -512,8 +552,11 @@ export default function PracticePage() {
               totalExercises - 1
             }
           />
+
         ) : (
+
           <div className="practice-empty">
+
             <span className="eyebrow">
               EXERCISE TYPE
             </span>
@@ -526,15 +569,21 @@ export default function PracticePage() {
             <p>
               O exercício{" "}
               <strong>
-                {currentExercise.type}
+                {
+                  currentExercise.type
+                }
               </strong>{" "}
               será suportado em uma
               próxima versão do
               CloudLab.
             </p>
+
           </div>
+
         )}
+
       </section>
+
     </main>
   );
 }
