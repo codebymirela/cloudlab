@@ -12,6 +12,7 @@ export type ExerciseOption = {
 
 export type Exercise = {
   id: string;
+
   type: ExerciseType;
 
   question: string;
@@ -25,6 +26,14 @@ export type Exercise = {
   xp: number;
 };
 
+export type LessonSection = {
+  id: string;
+
+  title?: string;
+
+  content: string;
+};
+
 export type Lesson = {
   id: string;
 
@@ -35,6 +44,8 @@ export type Lesson = {
   estimatedMinutes: number;
 
   xp: number;
+
+  content: LessonSection[];
 
   exercises: Exercise[];
 };

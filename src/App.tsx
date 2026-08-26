@@ -7,8 +7,9 @@ import Header from "./components/layout/Header";
 
 import HomePage from "./pages/HomePage";
 import LearnPage from "./pages/LearnPage";
-import BuildPage from "./pages/BuildPage";
 import LearningPathPage from "./pages/LearningPathPage";
+import LessonPage from "./pages/LessonPage";
+import BuildPage from "./pages/BuildPage";
 
 export default function App() {
   return (
@@ -29,6 +30,11 @@ export default function App() {
         <Route
           path="/learn/:pathId"
           element={<LearningPathPage />}
+        />
+
+        <Route
+          path="/learn/:pathId/:moduleId/:lessonId"
+          element={<LessonPage />}
         />
 
         <Route

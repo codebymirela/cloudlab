@@ -20,14 +20,12 @@ export default function LearningPathPage() {
     );
   }
 
-  const path =
-    awsLearningPath;
+  const path = awsLearningPath;
 
   const totalLessons =
     path.modules.reduce(
       (total, module) =>
-        total +
-        module.lessons.length,
+        total + module.lessons.length,
       0,
     );
 
@@ -37,8 +35,7 @@ export default function LearningPathPage() {
         moduleTotal +
         module.lessons.reduce(
           (lessonTotal, lesson) =>
-            lessonTotal +
-            lesson.xp,
+            lessonTotal + lesson.xp,
           0,
         ),
       0,
@@ -46,9 +43,7 @@ export default function LearningPathPage() {
 
   return (
     <main className="learning-path-page">
-
       <section className="learning-path-hero">
-
         <Link
           to="/learn"
           className="back-link"
@@ -57,7 +52,6 @@ export default function LearningPathPage() {
         </Link>
 
         <div className="path-title-row">
-
           <div className="path-main-icon">
             {path.icon}
           </div>
@@ -75,11 +69,9 @@ export default function LearningPathPage() {
               {path.description}
             </p>
           </div>
-
         </div>
 
         <div className="path-summary">
-
           <div>
             <strong>
               {path.modules.length}
@@ -109,30 +101,22 @@ export default function LearningPathPage() {
               XP disponível
             </span>
           </div>
-
         </div>
-
       </section>
 
-
       <section className="module-list">
-
         {path.modules.map(
           (module, index) => (
-
             <article
               key={module.id}
               className="module-card"
             >
-
               <div className="module-number">
                 {index + 1}
               </div>
 
               <div className="module-content">
-
                 <div className="module-heading">
-
                   <div className="module-icon">
                     {module.icon}
                   </div>
@@ -146,25 +130,20 @@ export default function LearningPathPage() {
                       {module.title}
                     </h2>
                   </div>
-
                 </div>
-
 
                 <p className="module-description">
                   {module.description}
                 </p>
 
-
                 <div className="lesson-preview-list">
-
                   {module.lessons.map(
                     (lesson, lessonIndex) => (
-
-                      <div
+                      <Link
                         key={lesson.id}
+                        to={`/learn/${path.id}/${module.id}/${lesson.id}`}
                         className="lesson-preview"
                       >
-
                         <div className="lesson-status">
                           {lessonIndex === 0
                             ? "▶"
@@ -172,7 +151,6 @@ export default function LearningPathPage() {
                         </div>
 
                         <div className="lesson-preview-info">
-
                           <strong>
                             {lesson.title}
                           </strong>
@@ -182,25 +160,16 @@ export default function LearningPathPage() {
                             {" · "}
                             {lesson.xp} XP
                           </span>
-
                         </div>
-
-                      </div>
-
+                      </Link>
                     ),
                   )}
-
                 </div>
-
               </div>
-
             </article>
-
           ),
         )}
-
       </section>
-
     </main>
   );
 }

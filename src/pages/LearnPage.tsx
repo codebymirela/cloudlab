@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+
 export default function LearnPage() {
   return (
     <main className="page-container">
@@ -23,7 +24,9 @@ export default function LearnPage() {
             ☁
           </div>
 
-          <h2>AWS Cloud</h2>
+          <h2>
+            AWS Cloud
+          </h2>
 
           <p>
             Compute, networking, storage,
@@ -31,11 +34,11 @@ export default function LearnPage() {
           </p>
 
           <Link
-          to="/learn/aws"
-          className="learning-button"
+            to="/learn/aws"
+            className="learning-button"
           >
-         Começar
-         </Link>
+            Começar
+          </Link>
         </article>
 
         <article className="learning-card">
@@ -43,15 +46,17 @@ export default function LearnPage() {
             HCL
           </div>
 
-          <h2>Terraform</h2>
+          <h2>
+            Terraform
+          </h2>
 
           <p>
             Infrastructure as Code, providers,
             resources, state e modules.
           </p>
 
-          <button>
-            Começar
+          <button disabled>
+            Em breve
           </button>
         </article>
 
@@ -60,15 +65,17 @@ export default function LearnPage() {
             $
           </div>
 
-          <h2>Linux</h2>
+          <h2>
+            Linux
+          </h2>
 
           <p>
             Terminal, arquivos, processos,
             networking e troubleshooting.
           </p>
 
-          <button>
-            Começar
+          <button disabled>
+            Em breve
           </button>
         </article>
       </section>
